@@ -7,6 +7,7 @@ defmodule UvdFooter.JobController do
   def reset(conn, _params) do json(conn, get_jobs(nil)) end
 
   defp get_jobs do
+    client = get_client
     jobs = get_jobs(client |> Exredis.query ["GET", "jobs"])
     client |> Exredis.stop
     jobs
@@ -16,12 +17,14 @@ defmodule UvdFooter.JobController do
 
   defp get_jobs(_) do
     jobs = JenkinsProvider.get_latest(4)
+    client = get_client
     client |> Exredis.query ["SET", "jobs", jobs |> Poison.encode!]
+    client |> Exredis.stop
     jobs
   end
 
   defp redis_url do Application.get_env(:uvd_footer, :redis_url) end
 
-  defp client do redis_url |> Exredis.start_using_connection_string end
+  defp get_client do redis_url |> Exredis.start_using_connection_string end
 
 end
