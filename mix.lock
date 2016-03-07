@@ -2,6 +2,8 @@
   "combine": {:hex, :combine, "0.7.0"},
   "cowboy": {:hex, :cowboy, "1.0.4"},
   "cowlib": {:hex, :cowlib, "1.0.2"},
+  "eredis": {:hex, :eredis, "1.0.8"},
+  "exredis": {:git, "https://github.com/artemeff/exredis.git", "eaf57c0f76702417a9b1fa6b8fb950aaff446673", []},
   "gettext": {:hex, :gettext, "0.10.0"},
   "hackney": {:hex, :hackney, "1.5.0"},
   "httpotion": {:hex, :httpotion, "2.1.0"},

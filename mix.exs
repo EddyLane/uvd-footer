@@ -17,7 +17,7 @@ defmodule UvdFooter.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {UvdFooter, []},
-     applications: [:phoenix, :cowboy, :logger, :gettext, :httpotion, :xmerl, :timex]]
+     applications: [:phoenix, :cowboy, :logger, :gettext, :httpotion, :xmerl, :timex, :exredis]]
   end
 
   # Specifies which paths to compile per environment.
@@ -33,6 +33,7 @@ defmodule UvdFooter.Mixfile do
      {:cowboy, "~> 1.0"},
      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
      {:timex, "~> 1.0"},
+     {:exredis, github: "artemeff/exredis"},
      {:httpotion, "~> 2.1.0"}]
   end
 end

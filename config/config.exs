@@ -17,7 +17,8 @@ config :uvd_footer, UvdFooter.Endpoint,
 config :uvd_footer,
   ci_token: System.get_env("CI_TOKEN"),
   ci_user: System.get_env("CI_USER"),
-  ci_url: System.get_env("CI_URL")
+  ci_url: System.get_env("CI_URL"),
+  redis_url: System.get_env("REDIS_URL")
 
 # Configures Elixir's Logger
 config :logger, :console,
