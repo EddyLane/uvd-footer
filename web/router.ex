@@ -9,6 +9,7 @@ defmodule UvdFooter.Router do
     pipe_through :api
 
      resources "/jobs", JobController
+     post "/reset", JobController, :reset
   end
 
 end

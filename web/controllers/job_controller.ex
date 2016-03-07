@@ -3,10 +3,13 @@ defmodule UvdFooter.JobController do
   use UvdFooter.Web, :controller
   alias UvdFooter.JenkinsProvider
 
-  def index(conn, _params) do
+  def index(conn, _params) do json(conn, get_jobs) end
+  def reset(conn, _params) do json(conn, get_jobs(nil)) end
+
+  defp get_jobs do
     jobs = get_jobs(client |> Exredis.query ["GET", "jobs"])
     client |> Exredis.stop
-    json(conn, jobs)
+    jobs
   end
 
   defp get_jobs(jobs) when is_binary(jobs) do Poison.decode!(jobs) end
