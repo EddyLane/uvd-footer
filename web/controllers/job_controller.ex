@@ -4,13 +4,7 @@ defmodule UvdFooter.JobController do
   alias UvdFooter.JenkinsProvider
 
   def index(conn, _params) do json(conn, get_jobs) end
-  def reset(conn, _params) do
-
-    IO.puts conn.remote_ip
-
-    json(conn, get_jobs(nil))
-
-  end
+  def reset(conn, _params) do json(conn, get_jobs(nil)) end
 
   defp get_jobs do
     jobs = get_jobs(client |> Exredis.query ["GET", "jobs"])
