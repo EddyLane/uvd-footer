@@ -9,7 +9,8 @@ defmodule UvdFooter.Mixfile do
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps,
+     aliases: ["phoenix.digest": ["my_app.digest", "phoenix.digest"]]]
   end
 
   # Configuration for the OTP application.
@@ -17,7 +18,7 @@ defmodule UvdFooter.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {UvdFooter, []},
-     applications: [:phoenix, :cowboy, :logger, :gettext, :httpotion, :xmerl, :timex, :exredis]]
+     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext, :httpotion, :xmerl, :timex, :exredis]]
   end
 
   # Specifies which paths to compile per environment.
@@ -29,6 +30,8 @@ defmodule UvdFooter.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [{:phoenix, "~> 1.1.4"},
+     {:phoenix_html, "~> 2.1"},
+     {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},

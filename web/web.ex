@@ -41,6 +41,9 @@ defmodule UvdFooter.Web do
       import UvdFooter.Router.Helpers
       import UvdFooter.ErrorHelpers
       import UvdFooter.Gettext
+
+      use Phoenix.HTML
+
     end
   end
 

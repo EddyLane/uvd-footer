@@ -1,0 +1,5 @@
+<div>
+    <div>Hello there</div>
+
+    <div id='root'></div>
+</div>
