@@ -12,8 +12,9 @@ config :uvd_footer, UvdFooter.Endpoint,
   code_reloader: true,
   check_origin: false,
   cache_static_lookup: false,
-  #watchers: [node: ["./node_modules/.bin/webpack-dev-server", "--watch", "--port 4001", "--colors"]]
-  watchers: [node: ["node_modules/webpack/bin/webpack.js", "--watch-stdin", "--progress", "--colors"]]
+  #watchers: [node: ["./node_modules/.bin/webpack-dev-server"]]
+  #watchers: [node: ["node_modules/webpack/bin/webpack.js", "--watch-stdin", "--progress", "--colors"]]
+  watchers: [{Path.expand("webpack.devserver.js"), []}]
 
 # Watch static and templates for browser reloading.
 config :uvd_footer, UvdFooter.Endpoint,
