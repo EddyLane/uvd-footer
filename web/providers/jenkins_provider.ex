@@ -25,8 +25,10 @@ defmodule UvdFooter.JenkinsProvider do
      |> Enum.map(&parse_entries/1)
      |> Enum.sort(&entries_by_last_updated/2)
      |> Enum.take(amount)
-     |> Enum.map(&replace_api_link/1)
-     |> Enum.map(&add_in_extra_job_data/1)
+     |> Enum.map(&replace_api_job_link/1)
+     |> Enum.map(&(add_in_extra_job_data(&1, :job_link)))
+     |> Enum.map(&replace_api_build_link/1)
+     |> Enum.map(&(add_in_extra_job_data(&1, :build_link)))
      |> Enum.map(&sanitize_job_data/1)
   end
 
@@ -50,11 +52,14 @@ defmodule UvdFooter.JenkinsProvider do
   end
 
   def sanitize_job_data(job) do
-    job |> Map.take([:updated, :title, :timestamp, :result, :published, :number, :fullDisplayName, :estimatedDuration, :duration, :displayName])
+    job
+    |> Map.put(:image, job |> Map.get(:description))
+    |> Map.take([:updated, :title, :timestamp, :result, :published, :number, :fullDisplayName, :estimatedDuration, :duration, :displayName, :image])
   end
 
-  def add_in_extra_job_data(job) do
-    %{ body: json_string } = HTTPotion.get Map.get(job, :link)
+  def add_in_extra_job_data(job, link) do
+
+    %{ body: json_string } = HTTPotion.get Map.get(job, link)
 
     Parser.parse!(json_string)
     |> string_keys_to_atoms
@@ -65,12 +70,17 @@ defmodule UvdFooter.JenkinsProvider do
       for {key, val} <- string_key_map, into: %{}, do: {String.to_atom(key), val}
   end
 
-  def replace_api_link(job) do
-    job |> Map.put(:link, api_link(job |> Map.get(:link)))
+  def replace_api_job_link(job) do
+    job |> Map.put(:job_link, api_link(job |> Map.get(:id)))
+  end
+
+  def replace_api_build_link(job) do
+    job |> Map.put(:build_link, api_link(job |> Map.get(:link)))
   end
 
   defp api_link(link) do
     link
+    |> replace_prefix("tag:hudson.dev.java.net,2008:", "")
     |> replace_prefix("http://", "http://#{auth_string}@")
     |> replace_suffix("/", "/api/json")
   end
