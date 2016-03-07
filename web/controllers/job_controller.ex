@@ -6,8 +6,8 @@ defmodule UvdFooter.JobController do
   def index(conn, _params) do json(conn, get_jobs) end
   def reset(conn, _params) do
 
-    IO.puts conn.host
-    
+    IO.puts conn.remote_ip
+
     json(conn, get_jobs(nil))
 
   end
