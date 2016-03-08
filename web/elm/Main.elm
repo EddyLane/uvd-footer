@@ -3,6 +3,8 @@ import Html.Attributes exposing (..)
 import StartApp
 import Effects exposing (Effects, Never)
 import String
+import Transit
+import TransitStyle
 
 --> MODEL
 
@@ -22,11 +24,11 @@ type alias Job =
     }
 
 type alias Model =
-    { jobs: List Job }
+    Transit.WithTransition { jobs: List Job }
 
 
 emptyModel : Model
-emptyModel = Model []
+emptyModel = ({ jobs = [], transition = Transit.initial })
 
 --> UPDATE
 
@@ -70,9 +72,9 @@ completedBuild job =
       ]
     ]
 
-buildingBuild : Job -> Html
-buildingBuild job =
-     li [ class "card" ] [
+buildingBuild : Transit.Transition -> Job -> Html
+buildingBuild transition job =
+     li [ class "card", style (TransitStyle.fadeSlideLeft 5000 transition) ] [
        img [ src job.image, class "card__avatar" ] [],
        h3 [ class "card__name" ] [ text job.displayName ],
        div [ class "progress progress-striped active" ] [
@@ -96,7 +98,7 @@ view address model =
     filteredBuilding = List.filter inProgress model.jobs
 
     completed = List.map completedBuild filteredCompleted
-    building = List.map buildingBuild filteredBuilding
+    building = List.map (buildingBuild model.transition) filteredBuilding
 
     completedJobAmount = filteredCompleted |> List.length |> toString
     title = "Last " ++ completedJobAmount ++ " builds"
@@ -106,32 +108,25 @@ view address model =
     isBuildingPanel = ul [ class "l-flex l-flex--around leeroy leeroy--building" ] building
     isNotBuildingPanel = div [ class "leeroy-no-builds" ] [ text "Jenkins gonna break yo builds!" ]
 
-    buildingPanel = if isBuilding then [isBuildingPanel] else [isNotBuildingPanel]
+    buildingPanel = if isBuilding then isBuildingPanel else isNotBuildingPanel
+
+
   in
-    div []
+    div [ class "l-panels" ]
       [
         div [ class "l-panel l-panel--dark l-panel--fluid"] [
 
-          h1 [ class "heading" ] [
-            span [ class "l-inner" ]
-                 [ text "Building ",
-                   img [ src "images/lego.png" ] [ ]
-                 ]
-          ],
-
-          div [ class "l-inner" ] buildingPanel
+          div [ class "l-inner" ] [
+            h1 [ class "heading" ] [ span [ class "l-inner" ] [ img [ src "images/lego.png" ] [], text " Building" ] ],
+            buildingPanel
+          ]
 
         ],
 
-        div [ class "l-panel l-panel--dark l-panel--fluid"] [
-
-          h1 [ class "heading" ] [
-            span [ class "l-inner" ]
-                 [ text title ]
-          ],
-
+        div [ class "l-panel l-panel--fluid"] [
           div [ class "l-inner" ] [
-            ul [ class "l-flex leeroy" ] completed
+          h1 [ class "heading" ] [ span [ class "l-inner" ] [ text title ] ],
+          ul [ class "l-flex leeroy" ] completed
           ]
         ]
     ]

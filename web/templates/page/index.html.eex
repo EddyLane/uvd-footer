@@ -6,9 +6,7 @@
     </div>
 </div>
 
-<div class="l-panels">
-    <div id="root"></div>
-</div>
+<div id="root"></div>
 
 <div class="footer">
 
