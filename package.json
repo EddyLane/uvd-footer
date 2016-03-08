@@ -1,7 +1,9 @@
 {
   "repository": {},
   "scripts": {
-    "dev-server": "./node_modules/.bin/webpack-dev-server --watch --port 4001"
+    "dev-server": "./node_modules/.bin/webpack-dev-server --watch --port 4001",
+    "compile": "./node_modules/.bin/webpack -p",
+    "postinstall": "npm run compile"
   },
   "dependencies": {
     "babel-core": "^5.8.22",
