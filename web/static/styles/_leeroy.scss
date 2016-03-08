@@ -1,0 +1,43 @@
+@include table-row-variant('blue', $state-success-bg);
+@include table-row-variant('red', $state-danger-bg);
+@include table-row-variant('grey', $state-warning-bg);
+
+
+.jenkins-img {
+    width: 100px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.leeroy-container {
+    padding: 20px;
+}
+
+
+.leeroy {
+    margin-top: 100px;
+    padding: 0 1em;
+
+    .card {
+        text-align: center;
+    }
+
+}
+
+.leeroy-no-builds {
+    background-image: url(../../../priv/static/images/no-builds.png);
+    background-position: center top;
+    background-repeat: no-repeat;
+    text-align: center;
+    padding-top: 280px;
+    margin-top: 80px;
+    width: 300px;
+    margin: 50px auto 0 auto;
+    color: rgba(255,255,255,0.5);
+}
+
+
+.leeroy .card.ng-enter {
+    animation: flipInY 1s linear;
+}

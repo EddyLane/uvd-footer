@@ -20,7 +20,7 @@ config :uvd_footer, UvdFooter.Endpoint,
 config :uvd_footer, UvdFooter.Endpoint,
   live_reload: [
     patterns: [
-      # ~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$},
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$},
       ~r{web/views/.*(ex)$},
       ~r{web/templates/.*(eex)$}
     ]

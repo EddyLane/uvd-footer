@@ -1,0 +1,188 @@
+$icon-font-path: "../../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+
+@import '_vars';
+
+
+
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+@import '_vars';
+
+
+/* Space out content a bit */
+
+body {
+    background: $c--beige;
+    font-family: "ff-meta-web-pro", sans-serif;
+}
+
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: "ff-meta-web-pro", sans-serif;
+    margin-top: 0;
+    color: #554e44;
+}
+
+h1 {
+    font-size: 2.8rem;
+}
+
+ul,
+p {
+    margin-top: 0;
+}
+
+
+
+
+.heading {
+    background: $c--beige-dark;
+    border-top: 2px dashed $c--beige-darker;
+    border-bottom: 2px dashed $c--beige-darker;
+    line-height: 1;
+    font-weight: 700;
+    padding: 0.25em 2em;
+}
+
+.spinner {
+    display: block;
+    margin: 30px auto;
+}
+
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.header {
+    background: $c--purple;
+    padding: 2rem;
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/**** Layout ***/
+
+.l-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.l-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.l-flex--around {
+    justify-content: space-around;
+}
+
+.l-panels {
+    // display: flex;
+    // width: 100%;
+    margin-bottom: 2rem;
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+
+
+.l-panels > * {
+    // directives get inserted into the dom
+    width: 100%;
+    display: flex;
+}
+
+.l-panel {
+    flex: 1;
+    padding-bottom: 3rem;
+    transition:1s all;
+}
+
+.l-panel--dark {
+    background-color: #a19d93;
+    min-height: 300px;
+    .heading {
+        background:#a19d93;
+        color: #fff;
+    }
+}
+
+
+
+.l-panel--fluid {
+    flex: auto;
+}
+
+.container {
+    max-width: 1024px;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bounceIn--on {
+    animation: bounceIn 0.5s ease-out;
+}
+
+
+.modal-dialog {
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.5);
+
+    text-align: center;
+
+    .modal-content {
+        background: rgba(255,255,255,0.4);
+    }
+
+    img {
+        max-width: 100%;
+        border: 10px solid white;
+        display: block;
+        margin: 1em auto 0 auto;
+    }
+
+    h3 {
+        padding: 0.5em;
+        font-size: 20px;
+        background: $c--beige;
+    }
+}
+
+@import '_notification.scss';
+@import '_card';
+@import '_leeroy';
+@import '_trello';

@@ -12,7 +12,7 @@ var plugins = [
         __PROD__: prod
     })
 ];
-var loaders = ['babel', 'elm-webpack', 'css-loader'];
+var loaders = ['babel', 'elm-webpack', 'css-loader', 'url-loader'];
 var publicPath = 'http://localhost:4001/';
 
 if (prod) {
@@ -52,6 +52,10 @@ module.exports = {
                 loader: "style-loader!css-loader"
             },
             {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass']
+            },
+            {
                 test: /\.jsx?/,
                 loader: 'babel-loader',
                 exclude: /node_modules/
@@ -59,6 +63,10 @@ module.exports = {
             {
                 test   : /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
                 loader : 'file-loader'
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                loader: 'url-loader?limit=8192'
             }
         ]
     }

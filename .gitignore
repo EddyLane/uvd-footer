@@ -9,6 +9,8 @@ erl_crash.dump
 
 node_modules
 elm-stuff
+.DS_STORE
+dump.rdb
 
 priv/static
 

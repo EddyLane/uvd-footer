@@ -1,0 +1,67 @@
+.card {
+    border: 1px solid #EEE;
+    border-radius: 5px;
+    width: 200px;
+    background: #FFF;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    font-size: 15px;
+    padding: 10px 20px;
+    min-height:220px;
+    color: #8B877D;
+    margin: 0 1em;
+}
+
+
+.card__avatar {
+    display: block;
+    margin: 0 auto;
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #8B877D;
+    background: #FFF;
+    padding: 0px;
+    margin-top: -80px;
+    margin-bottom: 20px;
+}
+
+
+.card__name {
+    font-size: 15px;
+    color: #8B877D;
+    text-transform: capitalize;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.card__footer {
+    margin-bottom: 0;
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    line-height: 1;
+    background: #400E4D;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    text-align: center;
+}
+
+
+.card__status {
+    position: absolute;
+    bottom: 25px;
+    z-index: 100;
+    left: 50%;
+    margin-left: -17.5px;
+}
+
+.card__culprits {
+    margin-top: 90px;
+}
