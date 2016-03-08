@@ -10,7 +10,7 @@ defmodule UvdFooter.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps,
-     aliases: ["phoenix.digest": ["my_app.digest", "phoenix.digest"]]]
+     aliases: ["phoenix.digest": ["uvd_footer.digest", "phoenix.digest"]]]
   end
 
   # Configuration for the OTP application.
