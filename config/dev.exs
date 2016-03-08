@@ -11,7 +11,20 @@ config :uvd_footer, UvdFooter.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: []
+  cache_static_lookup: false,
+  #watchers: [node: ["./node_modules/.bin/webpack-dev-server"]]
+  #watchers: [node: ["node_modules/webpack/bin/webpack.js", "--watch-stdin", "--progress", "--colors"]]
+  watchers: [{Path.expand("webpack.devserver.js"), []}]
+
+# Watch static and templates for browser reloading.
+config :uvd_footer, UvdFooter.Endpoint,
+  live_reload: [
+    patterns: [
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$},
+      ~r{web/views/.*(ex)$},
+      ~r{web/templates/.*(eex)$}
+    ]
+  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

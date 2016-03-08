@@ -30,6 +30,9 @@ defmodule UvdFooter.JenkinsProvider do
      |> Enum.map(&replace_api_build_link/1)
      |> Enum.map(&(add_in_extra_job_data(&1, :build_link)))
      |> Enum.map(&sanitize_job_data/1)
+     |> Enum.map(&replace_culprits/1)
+     |> Enum.map(&add_formatted_date_string/1)
+     |> Enum.map(&convert_to_job_struct/1)
   end
 
   def parse_entries(entries) do xmlElement(entries, :content) |> parse end
@@ -39,23 +42,38 @@ defmodule UvdFooter.JenkinsProvider do
   def ci_user do Application.get_env(:uvd_footer, :ci_user) end
 
   def entries_by_last_updated(first, second) do
-    {:ok, first_date} =  get_updated_datetime(first)
-    {:ok, second_date} = get_updated_datetime(second)
+    {:ok, first_date} =  get_updated_datetime(first, :updated)
+    {:ok, second_date} = get_updated_datetime(second, :updated)
 
     Date.compare(first_date, second_date) == 1
   end
 
-  defp get_updated_datetime(job) do
+  defp add_formatted_date_string(job) do
+
+    {:ok, datetime} =  get_updated_datetime(job, :published)
+    {:ok, formatted} = datetime |> DateFormat.format("%Y-%m-%d %H:%I", :strftime)
+
+    job |> Map.put(:formattedPublished, formatted)
+
+  end
+
+  defp get_updated_datetime(job, key) do
     job
-    |> Map.get(:updated)
+    |> Map.get(key)
     |> DateFormat.parse("{ISOz}")
   end
 
   def sanitize_job_data(job) do
     job
     |> Map.put(:image, job |> Map.get(:description))
-    |> Map.take([:updated, :title, :timestamp, :result, :published, :number, :fullDisplayName, :estimatedDuration, :duration, :displayName, :image])
   end
+
+  defp replace_culprits(job) do
+    culprits = Map.get(job, :culprits) |> Enum.map(&(Map.get(&1, "fullName")))
+    job |> Map.put(:culprits, culprits)
+   end
+
+  defp convert_to_job_struct(map) do struct(UvdFooter.Job, map) end
 
   def add_in_extra_job_data(job, link) do
 

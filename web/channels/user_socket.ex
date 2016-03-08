@@ -2,7 +2,7 @@ defmodule UvdFooter.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "rooms:*", UvdFooter.RoomChannel
+  channel "rooms:*", UvdFooter.JobChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

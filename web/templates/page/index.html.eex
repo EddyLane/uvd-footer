@@ -1,0 +1,13 @@
+<div class="header">
+    <div class="l-inner">
+        <div class="brand">
+            <img src="images/logo.png" />
+        </div>
+    </div>
+</div>
+
+<div id="root"></div>
+
+<div class="footer">
+
+</div>
