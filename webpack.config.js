@@ -13,11 +13,15 @@ var plugins = [
     })
 ];
 var loaders = ['babel', 'elm-webpack', 'css-loader', 'url-loader'];
-var publicPath = 'http://localhost:4001/';
+var publicPath;
 
 if (prod) {
+
+    publicPath = 'https://uvd-ci-dashboard.herokuapp.com/';
     plugins.push(new webpack.optimize.UglifyJsPlugin());
+
 } else {
+    publicPath = 'http://localhost:4001/';
     plugins.push(new webpack.HotModuleReplacementPlugin());
     loaders.unshift('react-hot');
 }
