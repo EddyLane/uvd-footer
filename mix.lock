@@ -1,5 +1,6 @@
 %{"certifi": {:hex, :certifi, "0.4.0"},
   "combine": {:hex, :combine, "0.7.0"},
+  "cors_plug": {:hex, :cors_plug, "1.1.0"},
   "cowboy": {:hex, :cowboy, "1.0.4"},
   "cowlib": {:hex, :cowlib, "1.0.2"},
   "eredis": {:hex, :eredis, "1.0.8"},

@@ -35,5 +35,6 @@ defmodule UvdFooter.Endpoint do
     key: "_uvd_footer_key",
     signing_salt: "ZsZ1FWXn"
 
+  plug CORSPlug
   plug UvdFooter.Router
 end
