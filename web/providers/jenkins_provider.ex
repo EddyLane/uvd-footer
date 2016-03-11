@@ -41,6 +41,18 @@ defmodule UvdFooter.JenkinsProvider do
   def ci_token do Application.get_env(:uvd_footer, :ci_token) end
   def ci_user do Application.get_env(:uvd_footer, :ci_user) end
 
+  def add_percentage(job) do
+
+    {:ok, published} =  get_updated_datetime(job, :published)
+
+    {:ok, expected_complete} = Date.add(published, { 0, 0, Map.get(job, :estimatedDuration) })
+
+    {:ok, formatted} = datetime |> DateFormat.format("%Y-%m-%d %H:%I", :strftime)
+
+    job |> Map.put(:estimatedCompletion, formatted)
+
+  end
+
   def entries_by_last_updated(first, second) do
     {:ok, first_date} =  get_updated_datetime(first, :updated)
     {:ok, second_date} = get_updated_datetime(second, :updated)

@@ -5,6 +5,7 @@ import Effects exposing (Effects, Never)
 import String
 import Transit
 import TransitStyle
+import Task
 
 --> MODEL
 
@@ -23,9 +24,7 @@ type alias Job =
       culprits: List String
     }
 
-type alias Model =
-    Transit.WithTransition { jobs: List Job }
-
+type alias Model = Transit.WithTransition { jobs: List Job }
 
 emptyModel : Model
 emptyModel = ({ jobs = [], transition = Transit.initial })
@@ -36,6 +35,8 @@ type Action
     = NoOp
     | AddJob Job
     | SetJobs (List Job)
+    | UpdateJobs (List Job)
+    | TransitAction (Transit.Action Action)
 
 update : Action -> Model -> (Model, Effects Action)
 update action model =
@@ -47,23 +48,33 @@ update action model =
     AddJob job ->
         ({ model | jobs = job :: model.jobs }, Effects.none)
 
-    SetJobs jobs ->
+    UpdateJobs jobs ->
         ({ model | jobs = jobs }, Effects.none)
 
+    SetJobs jobs ->
+      let
+        timeline = Transit.timeline 100 (UpdateJobs jobs) 200
+      in
+        Transit.init TransitAction timeline model
+
+    TransitAction transitAction ->
+      Transit.update TransitAction transitAction model
 --> VIEW
 
 (=>) = (,)
 
-completedBuild : Job -> Html
-completedBuild job =
+
+
+completedBuild : Transit.Transition -> Job -> Html
+completedBuild transition job =
   let
     status = Maybe.withDefault "" job.result
     statusImage = if status == "SUCCESS" then "images/tick.png" else "images/cross.png"
     culpritImage name = "images/culprits/" ++ name ++ ".jpg"
     culprit e = li [] [ img [ src (culpritImage e), class "card__avatar", style [ "width" => "50px", "height" => "50px" ] ] [] ]
   in
-    li [ class "card" ] [
-      div [] [
+    li [ class "card", style (TransitStyle.fadeSlideLeft 50 transition)] [
+      div [  ] [
         img [ src job.image, class "card__avatar" ] [],
         h3 [ class "card__name" ] [ text job.displayName ],
         img [ src statusImage, class "card__status" ] [],
@@ -74,7 +85,11 @@ completedBuild job =
 
 buildingBuild : Transit.Transition -> Job -> Html
 buildingBuild transition job =
-     li [ class "card", style (TransitStyle.fadeSlideLeft 5000 transition) ] [
+  let progressWidth =
+
+
+  in
+     li [ class "card", style (TransitStyle.fadeSlideLeft 50 transition) ] [
        img [ src job.image, class "card__avatar" ] [],
        h3 [ class "card__name" ] [ text job.displayName ],
        div [ class "progress progress-striped active" ] [
@@ -86,6 +101,7 @@ buildingBuild transition job =
 view : Signal.Address Action -> Model -> Html
 view address model =
   let
+
     isFinished e = case e.result of
         Just result -> True
         Nothing -> False
@@ -97,7 +113,7 @@ view address model =
     filteredCompleted = List.filter isFinished model.jobs
     filteredBuilding = List.filter inProgress model.jobs
 
-    completed = List.map completedBuild filteredCompleted
+    completed = List.map (completedBuild model.transition) filteredCompleted
     building = List.map (buildingBuild model.transition) filteredBuilding
 
     completedJobAmount = filteredCompleted |> List.length |> toString
@@ -110,11 +126,10 @@ view address model =
 
     buildingPanel = if isBuilding then isBuildingPanel else isNotBuildingPanel
 
-
   in
     div [ class "l-panels" ]
       [
-        div [ class "l-panel l-panel--dark l-panel--fluid"] [
+        div [ class "l-panel l-panel--dark l-panel--fluid" ] [
 
           div [ class "l-inner" ] [
             h1 [ class "heading" ] [ span [ class "l-inner" ] [ img [ src "images/lego.png" ] [], text " Building" ] ],
@@ -123,7 +138,7 @@ view address model =
 
         ],
 
-        div [ class "l-panel l-panel--fluid"] [
+        div [ class "l-panel l-panel--fluid" ] [
           div [ class "l-inner" ] [
           h1 [ class "heading" ] [ span [ class "l-inner" ] [ text title ] ],
           ul [ class "l-flex leeroy" ] completed
@@ -148,3 +163,6 @@ app = StartApp.start
            }
 
 main = app.html
+
+port tasks : Signal (Task.Task Never ())
+port tasks = app.tasks
