@@ -85,10 +85,6 @@ completedBuild transition job =
 
 buildingBuild : Transit.Transition -> Job -> Html
 buildingBuild transition job =
-  let progressWidth =
-
-
-  in
      li [ class "card", style (TransitStyle.fadeSlideLeft 50 transition) ] [
        img [ src job.image, class "card__avatar" ] [],
        h3 [ class "card__name" ] [ text job.displayName ],

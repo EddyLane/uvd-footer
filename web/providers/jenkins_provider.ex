@@ -47,7 +47,7 @@ defmodule UvdFooter.JenkinsProvider do
 
     {:ok, expected_complete} = Date.add(published, { 0, 0, Map.get(job, :estimatedDuration) })
 
-    {:ok, formatted} = datetime |> DateFormat.format("%Y-%m-%d %H:%I", :strftime)
+    {:ok, formatted} = expected_complete |> DateFormat.format("%Y-%m-%d %H:%I", :strftime)
 
     job |> Map.put(:estimatedCompletion, formatted)
 
