@@ -5,14 +5,20 @@ defmodule UvdFooter.Job do
       :timestamp,
       :result,
       :published,
+      :updated,
       :formattedPublished,
       :number,
       :fullDisplayName,
       :estimatedDuration,
+      :estimatedCompletion,
       :duration,
       :displayName,
       :image,
-      :culprits
+      :culprits,
+      :timeDiff,
+      :startTimestamp,
+      :finishTimestamp,
+      :currentTImestamp
   ]
 
 end

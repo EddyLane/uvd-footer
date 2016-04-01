@@ -2,8 +2,12 @@ defmodule UvdFooter.JenkinsProvider do
 
   import String, only: [replace_prefix: 3, replace_suffix: 3]
 
+  use Timex
+
   alias Timex.DateFormat
   alias Timex.Date
+  alias Timex.Time
+  alias Timex.DateTime
   alias Poison.Parser
 
   require Record
@@ -32,6 +36,7 @@ defmodule UvdFooter.JenkinsProvider do
      |> Enum.map(&sanitize_job_data/1)
      |> Enum.map(&replace_culprits/1)
      |> Enum.map(&add_formatted_date_string/1)
+     |> Enum.map(&add_estimated_completion/1)
      |> Enum.map(&convert_to_job_struct/1)
   end
 
@@ -41,15 +46,40 @@ defmodule UvdFooter.JenkinsProvider do
   def ci_token do Application.get_env(:uvd_footer, :ci_token) end
   def ci_user do Application.get_env(:uvd_footer, :ci_user) end
 
-  def add_percentage(job) do
+  def add_estimated_completion(job) do
 
     {:ok, published} =  get_updated_datetime(job, :published)
+    #timestamp = Time.to_timestamp(published, :msecs)
 
-    {:ok, expected_complete} = Date.add(published, { 0, 0, Map.get(job, :estimatedDuration) })
+    estimatedDuration = Map.get(job, :estimatedDuration)
+    estimatedFinish = published |> Timex.add(Time.to_timestamp(estimatedDuration / 1000, :seconds))
 
-    {:ok, formatted} = expected_complete |> DateFormat.format("%Y-%m-%d %H:%I", :strftime)
 
-    job |> Map.put(:estimatedCompletion, formatted)
+    {:ok, estimatedFinishFormat} = estimatedFinish |> Timex.format("%F %R", :strftime)
+
+
+
+
+    #expected_complete = Date.add(published, timestamp)
+    #{:ok, formatted } = DateFormat.format(expected_complete, "%Y-%m-%d %H:%I", :strftime)
+    #bah_timestamp = Time.to_timestamp(Map.get(job, :estimatedDuration), :msecs)
+    #diff = compare(Map.get(job, :published), Map.get(job, :updated), :timestamp)
+
+
+    #IO.puts estimatedFinish
+
+    #IO.puts DateTime
+
+    job = job |> Map.put(:timeDiff, Elixir.Timex.DateTime.diff(published, estimatedFinish))
+
+    #job = job |> Map.put(:timeDiff, Date.compare(published, estimatedFinish))
+
+    #{:ok, startTimestamp} = DateTime.to_timestamp(published)
+
+    #job = job |> Map.put(:startTimestamp, Timex.DateTime.diff())
+
+    job |> Map.put(:estimatedCompletion, estimatedFinishFormat)
+
 
   end
 
@@ -63,7 +93,7 @@ defmodule UvdFooter.JenkinsProvider do
   defp add_formatted_date_string(job) do
 
     {:ok, datetime} =  get_updated_datetime(job, :published)
-    {:ok, formatted} = datetime |> DateFormat.format("%Y-%m-%d %H:%I", :strftime)
+    {:ok, formatted} = datetime |> Timex.format("%F %R", :strftime)
 
     job |> Map.put(:formattedPublished, formatted)
 
@@ -72,7 +102,7 @@ defmodule UvdFooter.JenkinsProvider do
   defp get_updated_datetime(job, key) do
     job
     |> Map.get(key)
-    |> DateFormat.parse("{ISOz}")
+    |> Elixir.Timex.Parse.DateTime.Parser.parse("{ISO:Extended:Z}")
   end
 
   def sanitize_job_data(job) do

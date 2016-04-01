@@ -35,7 +35,7 @@ defmodule UvdFooter.Mixfile do
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
-     {:timex, "~> 1.0"},
+     {:timex, "~> 2.0"},
      {:cors_plug, "~> 1.1"},
      {:exredis, github: "artemeff/exredis"},
      {:httpotion, "~> 2.1.0"}]
